@@ -5,30 +5,33 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class FileAdmin {
-    private String selectedFolder = "";
-    private List<Map<String,String>> data = new ArrayList<>();
-    static Scanner sc = new Scanner(System.in);
+    public static Scanner sc= new Scanner(System.in);
+    private static String rutaCarpeta = "";
+    private static String fichero = "";
+    private List<Map<String,String>> datos = new ArrayList<>();
 
-    public void seleccionFolder(Scanner scanner){
-        System.out.println("Ingresa la ruta de la carpeta");
-        selectedFolder = sc.nextLine();
-        File folder = new File(selectedFolder);
-        if (!folder.exists() || !folder.isDirectory()) {
-            System.out.println("Carpeta NO válida.");
-            selectedFolder = "";
-        }else{
-            System.out.println("Carpeta seleccionada: " + selectedFolder);
-            listFiles(folder);
+    public static void buscarCarpeta(){
+        System.out.println("Escribe la carpeta donde se encuentran los ficheros a leer:");
+        rutaCarpeta = sc.nextLine();
+        File carpeta = new File(rutaCarpeta);
+        if (carpeta.exists() && carpeta.isDirectory()){
+            System.out.println("La carpeta " + rutaCarpeta + " ,contiene:");
+            String [] listaDeArchivos = carpeta.list();
+            if (listaDeArchivos != null){
+                for (String archivo : listaDeArchivos){
+                    System.out.println("-" + archivo);
+                }    
+            }
+        } else {
+            System.out.println("La carpeta no existe, prueba otra ruta.");
         }
     }
+    public static void leerFichero(){
 
-    private void listFiles(File folder){
-        System.out.println("Archivos en la carpeta:");
-        for (File file : folder.listFiles()) {
-            if (file.isFile()) {
-                System.out.println(" - " + file.getName());
-            }
-        }
+    }
+    public static void main(String[] args) {
+        buscarCarpeta();
+        //leerFichero();
     }
 
    
