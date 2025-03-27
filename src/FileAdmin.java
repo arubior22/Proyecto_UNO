@@ -1,4 +1,6 @@
-@autor Ana Rubio
+/*
+ * @autor Ana Rubio
+ */
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 
 public class FileAdmin {
@@ -69,7 +69,7 @@ public class FileAdmin {
                 }
                 System.out.println("El fichero, " + fichero + " , ha sido leído correctamente.");
                 
-            } catch (IOException | ParserConfigurationException | SAXException e) {
+            } catch (IOException e) {
                 System.err.println("Error al leer el fichero: " + e.getMessage());
             }
         } else {
@@ -168,37 +168,43 @@ public class FileAdmin {
     
         return datos;
     }
-    public static List<Map<String, String>> leerXML(File archivo) throws IOException, ParserConfigurationException, SAXException {
+    public static List<Map<String, String>> leerXML(File archivo) throws IOException{ 
         List<Map<String, String>> datos = new ArrayList<>();
-        Map<String, String> filaActual = null;
-        String linea;
-        String etiquetaActual = null;
         if (!archivo.exists()) {
-            System.err.println("¡El archivo coches.xml no existe!");
+            System.err.println("¡El archivo" + archivo + " no existe!");
+            return datos;
         }
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            br.readLine();
+            boolean dentroDeElemento = false;
+            HashMap<String, String> elementos = new HashMap<>();
             while ((linea = br.readLine()) != null) {
                 linea = linea.trim();
                 
-                // Si es una etiqueta de apertura (ej: <nombre>)
-                if (linea.startsWith("<") && !linea.startsWith("</") && !linea.endsWith("/>")) {
-                    String etiqueta = linea.replace("<", "").replace(">", "").trim();
-                    etiquetaActual = etiqueta;
-                    filaActual = new HashMap<>();
+                // Si es una etiqueta de apertura 
+                if (linea.startsWith("<") && !linea.startsWith("</") && !linea.contains("</")) {
+                    dentroDeElemento = true;
+                    elementos = new HashMap<>();
+                }  
+                if (linea.startsWith("</") && dentroDeElemento) {
+                    dentroDeElemento = false;
+                    datos.add(elementos);
                 }
-                // Si es una etiqueta de cierre (ej: </nombre>)
-                else if (linea.startsWith("</") && filaActual != null) {
-                    datos.add(filaActual);
-                    filaActual = null;
+                if (dentroDeElemento) {
+                    linea = linea.replace("<", "").replace(">", " ").replace("/", " ");
+                    String[] palabras = linea.split(" ");
+                
+                    if (palabras.length >= 2) { 
+                        String clave = palabras[0].trim();
+                        String valor = palabras[1].trim();
+
+                        elementos.put(clave, valor);
+                    }
                 }
-                // Si es contenido (ej: Juan)
-                else if (filaActual != null && etiquetaActual != null && !linea.isEmpty()) {
-                    filaActual.put(etiquetaActual, linea);
-                }
-            }
+            }     
         } catch (IOException e) {
-            System.err.println("Error al leer XML: " + e.getMessage());
-            
+            System.err.println("Error al leer XML: " + e.getMessage());  
         }
         return datos;
     }
