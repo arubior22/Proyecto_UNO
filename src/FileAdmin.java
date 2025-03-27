@@ -173,15 +173,13 @@ public class FileAdmin {
         Map<String, String> filaActual = null;
         String linea;
         String etiquetaActual = null;
-
-        try {
-            FileReader fileReader = new FileReader(fichero);
-            BufferedReader br = new BufferedReader(fileReader);
+        if (!archivo.exists()) {
+            System.err.println("¡El archivo coches.xml no existe!");
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             while ((linea = br.readLine()) != null) {
                 linea = linea.trim();
-                if (!archivo.exists()) {
-                    System.err.println("¡El archivo coches.xml no existe!");
-                }
+                
                 // Si es una etiqueta de apertura (ej: <nombre>)
                 if (linea.startsWith("<") && !linea.startsWith("</") && !linea.endsWith("/>")) {
                     String etiqueta = linea.replace("<", "").replace(">", "").trim();
@@ -193,7 +191,10 @@ public class FileAdmin {
                     datos.add(filaActual);
                     filaActual = null;
                 }
-                
+                // Si es contenido (ej: Juan)
+                else if (filaActual != null && etiquetaActual != null && !linea.isEmpty()) {
+                    filaActual.put(etiquetaActual, linea);
+                }
             }
         } catch (IOException e) {
             System.err.println("Error al leer XML: " + e.getMessage());
