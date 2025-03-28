@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * @author Rebeca Poma
+ */
+
 public class Conversion {
     public static Scanner sc = new Scanner(System.in);
 

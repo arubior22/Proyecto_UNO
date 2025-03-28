@@ -1,5 +1,10 @@
 import java.util.Scanner;
 
+/**
+ * @author Rebeca Poma
+ * @author Ana Rubio
+ */
+
 public class FormatosMain {
 
      public static Scanner sc= new Scanner(System.in);
