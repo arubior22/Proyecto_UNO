@@ -39,7 +39,7 @@ public class FormatosMain {
                     break;
                 
                     default:
-                        System.out.println("No valida");
+                        System.out.println("Opción NO válida");
                         break;
                 }
         
