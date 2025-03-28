@@ -78,7 +78,7 @@ public class Conversion {
 
     private static void exportarJSON(List<Map<String, String>> datos, String nombreFichero) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
-            bw.write("[\n]");
+            bw.write("[\n");
 
             for (int i = 0; i < datos.size(); i++) {
                 Map<String, String> registro = datos.get(i);
