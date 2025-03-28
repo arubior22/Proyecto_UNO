@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,8 +8,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+
 
 
 
@@ -41,7 +41,7 @@ public class Conversion {
                 break;
                 
                 case "3":
-                //exportarXML(datos,nombreSalida + ".xml");
+                exportarXML(nombreSalida + ".xml",datos);
                 break;
         
         
@@ -74,11 +74,38 @@ public class Conversion {
 
     private static void exportarJSON(String nombreSalida,List<Map<String,String>> datos){
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreSalida))) {
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                String json = gson.toJson(datos);
-                bw.write(json);
-                System.out.println("Datos exportados a JSON: " + nombreSalida);
+              
+                bw.write("[\n]");
+                //System.out.println("Datos exportados a JSON: " + nombreSalida);
+                
+                
+                for(int i = 0;i<datos.size();i++){
+                    Map<String,String> registro = datos.get(i);
 
+                    bw.write("  {\n");
+
+                    int j = 0;
+                    for(Map.Entry<String, String> entry : registro.entrySet()){
+                        bw.write("    \"" + entry.getKey() + "\": \"" + entry.getValue() + "\"");
+
+                        if(j < registro.size() -1 ){
+                            bw.write(",\n");
+                        }else{
+                            bw.write("\n");
+                        }
+                        j++;
+                    }
+                    
+                bw.write("  }");
+                if(i < datos.size()-1){
+                    bw.write(",\n");
+                }
+            }
+
+            bw.write("\n]");
+            System.out.println("Archivo exportado ok");
+
+               
                 
             } catch (IOException e) {
                 System.out.println("Error al exportar JSON: " + e.getMessage());
@@ -88,25 +115,28 @@ public class Conversion {
 
     private static void exportarXML(String nombreSalida,List<Map<String,String>> datos){
             try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.newDocument();
-
-            Element rootElement = doc.createElement("registros");
-            doc.appendChild(rootElement);
+           StringBuilder xmlBuilder = new StringBuilder();
+           xmlBuilder.append("<registros>\n");
 
             for(Map<String,String> registro : datos){
-                Element elementoRegistro = doc.createElement("registros");
-                rootElement.appendChild(eelementoRegistro);
+                    xmlBuilder.append("<registros>\n");
                     for(Map.Entry<String,String> entrada : registro.entrySet()){
-                        Element campo = doc.create
+                        xmlBuilder.append("    <" + entrada.getKey() + ">" + entrada.getValue() + "</" + entrada.getKey() + ">\n");
 
                     }
 
-            }
+                    xmlBuilder.append(" </registro>\n");
 
-            } catch (Exception e) {
-                // TODO: handle exception
+            }
+            xmlBuilder.append("</registros>");
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreSalida))) {
+                bw.write(xmlBuilder.toString());
+            } 
+
+        System.out.println("Datos exportados a XML: " + nombreSalida);
+            } catch (IOException e) {
+                System.out.println("Error al exportar XML: " + e.getMessage());
             }
     }
 
