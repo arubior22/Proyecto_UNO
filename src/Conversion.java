@@ -14,34 +14,37 @@ import java.util.Set;
 
 public class Conversion {
     public static Scanner sc= new Scanner(System.in);
-    public static List<Map<String,String>> datos = new ArrayList<>();
+   //public static List<Map<String,String>> datos = new ArrayList<>();
 
-    public static void conversionFile(List<Map<String,String>> datos){
-        if(datos.isEmpty()){
-            System.out.println("Primero debes leer un archivo antes de convertirlo.");
-            return;
-        }
+    public static void conversionFile(){
+        // if (datos.isEmpty()) {
+        //     System.out.println("Primero debes leer un archivo antes de convertirlo.");
+        //     return;
+        // }
+        
 
         System.out.println("Selecciona el formato de conversión:");
         System.out.println("1.CSV");
         System.out.println("2.JSON");
         System.out.println("3.XML");
+        System.out.print("Elige una opcion: ");
 
-        String formato = sc.nextLine().toLowerCase();
-        System.out.println("Ingresa el nombre del archivo de salida:");
-        String nombreSalida = sc.nextLine();
+        int formato = sc.nextInt();
+        //System.out.println("Ingresa el nombre del archivo de salida:");
+        sc.nextLine();
         
         switch (formato) {
-            case "1":
-                exportarCSV(nombreSalida + ".csv",datos);
+            case 1:
+                //exportarCSV(nombreSalida + ".csv",datos);
+                exportarCSV(FileAdmin.datos, "salida.csv");
                 break;
                 
-                case "2":
-                exportarJSON(nombreSalida + ".json",datos);
+                case 2:
+                exportarJSON(FileAdmin.datos,"salida.json");
                 break;
                 
-                case "3":
-                exportarXML(nombreSalida + ".xml",datos);
+                case 3:
+                exportarXML(FileAdmin.datos,"salida.xml");
                 break;
         
         
@@ -51,29 +54,36 @@ public class Conversion {
     }
 
 
-    private static void exportarCSV(String nombreSalida,List<Map<String,String>> datos){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreSalida))) {
-            Set<String> claves = datos.get(0).keySet();
-            bw.write(String.join(",",claves));
-            bw.newLine();
-
-            for(Map<String,String> registro : datos){
-                List<String> valores = new ArrayList<>();
-                for(String clave : claves){
-                    valores.add(registro.getOrDefault(clave, ""));
+    private static void exportarCSV(List<Map<String, String>> datos, String nombreFichero){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
+            //Set<String> claves = datos.get(0).keySet();
+            if(!datos.isEmpty()){
+                Map<String,String> primerRegistro = datos.get(0);
+                for(String clave : primerRegistro.keySet()){
+                    bw.write(clave + ";");
                 }
-                bw.write(String.join(",",valores));
-                bw.newLine();
+                bw.write("\n");
+
+                for(Map<String,String> registro : datos){
+                    for(String valor : registro.values()){
+                        bw.write(valor + ",");
+                    }
+                    bw.write("\n");
+                }
+
+
             }
-            System.out.println("Datos exportados a CSV: " + nombreSalida);
+
+            System.out.println("Archivo exportado con exito");
+            
         } catch (IOException e) {
             System.out.println("Error al exportar CSV: " + e.getMessage());
         }
 
     }
 
-    private static void exportarJSON(String nombreSalida,List<Map<String,String>> datos){
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreSalida))) {
+    private static void exportarJSON(List<Map<String, String>> datos, String nombreFichero){
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
               
                 bw.write("[\n]");
                 //System.out.println("Datos exportados a JSON: " + nombreSalida);
@@ -113,28 +123,25 @@ public class Conversion {
 
     }
 
-    private static void exportarXML(String nombreSalida,List<Map<String,String>> datos){
-            try {
-           StringBuilder xmlBuilder = new StringBuilder();
-           xmlBuilder.append("<registros>\n");
+    private static void exportarXML(List<Map<String, String>> datos, String nombreFichero){
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))){
+           bw.write("<datos>\n");
 
             for(Map<String,String> registro : datos){
-                    xmlBuilder.append("<registros>\n");
+                    bw.write(" <registros>\n");
                     for(Map.Entry<String,String> entrada : registro.entrySet()){
-                        xmlBuilder.append("    <" + entrada.getKey() + ">" + entrada.getValue() + "</" + entrada.getKey() + ">\n");
+                        bw.write("    <" + entrada.getKey() + ">" + entrada.getValue() + "</" + entrada.getKey() + ">\n");
 
                     }
 
-                    xmlBuilder.append(" </registro>\n");
+                    bw.write(" </registro>\n");
 
             }
-            xmlBuilder.append("</registros>");
+            bw.write("</datos>");
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreSalida))) {
-                bw.write(xmlBuilder.toString());
-            } 
+        
 
-        System.out.println("Datos exportados a XML: " + nombreSalida);
+        System.out.println("Datos exportados a XML");
             } catch (IOException e) {
                 System.out.println("Error al exportar XML: " + e.getMessage());
             }

@@ -30,11 +30,12 @@ public class FormatosMain {
 
                     
                     case 3:
-                        if (!FileAdmin.datos.isEmpty()) {
-                            Conversion.conversionFile();
-                        } else{
-                            System.out.println("lee fichero");
-                        }
+                        // if (!FileAdmin.datos.isEmpty()) {
+                        //     Conversion.conversionFile();
+                        // } else{
+                        //     System.out.println("lee fichero");
+                        // }
+                        Conversion.conversionFile();
                     break;
 
                     case 4:

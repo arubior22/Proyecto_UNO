@@ -209,35 +209,35 @@ public class FileAdmin {
         return datos;
     }
     
-    public static void main(String[] args) {
-        String opcion;
+    // public static void main(String[] args) {
+    //     String opcion;
 
-        do {
-            System.out.println("\n--- MENÚ ---");
-            System.out.println("1. Seleccionar carpeta");
-            System.out.println("2. Leer fichero");
-            System.out.println("3. Conversión a");
-            System.out.println("0. Salir");
+    //     do {
+    //         System.out.println("\n--- MENÚ ---");
+    //         System.out.println("1. Seleccionar carpeta");
+    //         System.out.println("2. Leer fichero");
+    //         System.out.println("3. Conversión a");
+    //         System.out.println("0. Salir");
     
-            opcion = sc.nextLine();
+    //         opcion = sc.nextLine();
     
-            switch (opcion) {
-                case "1":
-                    seleccionarCarpeta();
-                    break;
-                case "2":
-                    leerFichero();
-                    break;
-                /*case "3":
-                    conversion();
-                    break;*/
-                case "0":
-                    System.out.println("Saliendo del programa.");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
-            }
-        } while (!opcion.equals("0"));
-    }
+    //         switch (opcion) {
+    //             case "1":
+    //                 seleccionarCarpeta();
+    //                 break;
+    //             case "2":
+    //                 leerFichero();
+    //                 break;
+    //             /*case "3":
+    //                 conversion();
+    //                 break;*/
+    //             case "0":
+    //                 System.out.println("Saliendo del programa.");
+    //                 break;
+    //             default:
+    //                 System.out.println("Opción no válida.");
+    //         }
+    //     } while (!opcion.equals("0"));
+    // }
     
 }
