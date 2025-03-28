@@ -9,10 +9,10 @@ public class Conversion {
     public static Scanner sc = new Scanner(System.in);
 
     public static void conversionFile() {
-        // if (datos.isEmpty()) {
-        // System.out.println("Primero debes leer un archivo antes de convertirlo.");
-        // return;
-        // }
+        if (FileAdmin.datos.isEmpty()) {
+        System.out.println("Primero debes leer un archivo antes de convertirlo.");
+        return;
+        }
 
         System.out.println("Selecciona el formato de conversión:");
         System.out.println("1.CSV");
@@ -21,21 +21,23 @@ public class Conversion {
         System.out.print("Elige una opcion: ");
 
         int formato = sc.nextInt();
-        // System.out.println("Ingresa el nombre del archivo de salida:");
         sc.nextLine();
+        System.out.println("Ingresa el nombre del archivo de salida(sin la extension): ");
+        String nombreFichero = sc.nextLine();
+        
 
         switch (formato) {
             case 1:
 
-                exportarCSV(FileAdmin.datos, "salida.csv");
+                exportarCSV(FileAdmin.datos, nombreFichero + ".csv");
                 break;
 
             case 2:
-                exportarJSON(FileAdmin.datos, "salida.json");
+                exportarJSON(FileAdmin.datos, nombreFichero + ".json");
                 break;
 
             case 3:
-                exportarXML(FileAdmin.datos, "salida.xml");
+                exportarXML(FileAdmin.datos, nombreFichero + ".xml");
                 break;
 
             default:
