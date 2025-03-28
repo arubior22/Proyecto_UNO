@@ -8,7 +8,7 @@ public class FormatosMain {
         boolean salir = false;
 
         while (!salir) {
-            System.out.println("Menú:");
+            System.out.println("\n       Menú");
             System.out.println("1.Selecciona Carpeta");
             System.out.println("2.Leer Fichero");
             System.out.println("3.Conversion");
