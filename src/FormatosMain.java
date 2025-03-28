@@ -1,10 +1,55 @@
-public class FormatosMain {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
+import java.util.Scanner;
 
-        // seleccionarCarpetab
-        // lectuaFichero
-        // conversion
-        // salir
+public class FormatosMain {
+
+     public static Scanner sc= new Scanner(System.in);
+    public static void main(String[] args) {
+        
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("Menú:");
+            System.out.println("1.Selecciona Carpeta");
+            System.out.println("2.Leer Fichero");
+            System.out.println("3.Conversion");
+            System.out.println("4.Salir");
+            System.out.print("Elige una opcion: ");
+
+            int opcion = sc.nextInt();
+            sc.nextLine();
+
+
+                switch (opcion) {
+                    case 1:
+                        FileAdmin.seleccionarCarpeta();
+                        break;
+
+                    case 2:
+                        FileAdmin.leerFichero();
+                        break;
+
+                    
+                    case 3:
+                        if (!FileAdmin.datos.isEmpty()) {
+                            Conversion.conversionFile();
+                        } else{
+                            System.out.println("lee fichero");
+                        }
+                    break;
+
+                    case 4:
+                        System.out.println("Hasta luego!");
+                        salir = true;
+                    break;
+                
+                    default:
+                        System.out.println("No valida");
+                        break;
+                }
+        
+        
+        
+        }
+
     }
 }
